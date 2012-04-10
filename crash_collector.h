@@ -1,4 +1,4 @@
-// Copyright (c) 2010 The Chromium OS Authors. All rights reserved.
+// Copyright (c) 2012 The Chromium OS Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -27,6 +27,12 @@ class CrashCollector {
   // crash counting function, and metrics collection enabled oracle.
   void Initialize(CountCrashFunction count_crash,
                   IsFeedbackAllowedFunction is_metrics_allowed);
+
+  // The udev event string should be formatted as follows:
+  //   "ACTION=[action]:KERNEL=[name]:SUBSYSTEM=[subsystem]"
+  // The values don't have to be in any particular order. One or more of them
+  // could be omitted, in which case it would be treated as a wildcard (*).
+  bool HandleUdevCrash(const std::string &udev_event);
 
  protected:
   friend class CrashCollectorTest;
