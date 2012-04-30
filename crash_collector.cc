@@ -117,9 +117,22 @@ bool CrashCollector::HandleUdevCrash(const std::string &udev_event) {
     return false;
   }
 
+  // Compress the output using gzip.
+  std::string zip_command = std::string("gzip ") + crash_path.value();
+  int zip_command_result = system(zip_command.c_str());
+  if (zip_command_result) {
+    LOG(WARNING) << "Command [" << zip_command << "] returned value "
+                 << zip_command_result;
+  }
+  FilePath crash_path_zipped = FilePath(crash_path.value() + ".gz");
+  if (!file_util::PathExists(crash_path_zipped)) {
+    LOG(ERROR) << "Could not create zip file " << crash_path_zipped.value();
+    return false;
+  }
+
   AddCrashMetaData(kUdevSignatureKey, kCollectUdevSignature);
   WriteCrashMetaData(GetCrashPath(crash_directory, log_file_name, "meta"),
-                     kUdevExecName, crash_path.value());
+                     kUdevExecName, crash_path_zipped.value());
   return true;
 }
 
