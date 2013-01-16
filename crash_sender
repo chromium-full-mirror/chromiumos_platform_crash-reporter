@@ -38,7 +38,7 @@ LEAVE_CORE_FILE="/root/.leave_core"
 LIST_PROXIES="/usr/bin/list_proxies"
 
 # Maximum crashes to send per day.
-MAX_CRASH_RATE=${MAX_CRASH_RATE:-32}
+MAX_CRASH_RATE=${MAX_CRASH_RATE:-100}
 
 # Path to metrics_client.
 METRICS_CLIENT="/usr/bin/metrics_client"
