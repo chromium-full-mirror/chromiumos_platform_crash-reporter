@@ -440,14 +440,13 @@ send_crash() {
     local timestamp="$(date +%s)"
     case ${product} in
       Chrome_ChromeOS)
-        product_name="Chrome"
+        echo "${timestamp},${id}" >> "${CHROME_CRASH_LOG}"
         ;;
       *)
-        product_name="ChromeOS"
+        # Do nothing.
+        lecho "Not logging non-Chrome crash in chrome://crashes"
         ;;
     esac
-    /usr/bin/printf '%s,%s\u00A0(%s)\n' \
-      "${timestamp}" "${id}" "${product_name}" >> "${CHROME_CRASH_LOG}"
     lecho "Crash report receipt ID ${id}"
   else
     lecho "Crash sending failed with: $(cat ${curl_stderr})"
